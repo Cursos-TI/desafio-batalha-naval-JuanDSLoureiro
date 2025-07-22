@@ -1,39 +1,12 @@
-
-// Desafio Batalha Naval - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
-    // Nível Novato - Posicionamento dos Navios
-    // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
-    // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
-    // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
-
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
-
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
-
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
-    
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
-
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
-
 #include <stdio.h>
+
+struct navio
+{
+    int area[3];
+    int colIni;
+    int linIni;
+};
+
 
 //jogo batalha naval
 int main (){
@@ -41,49 +14,67 @@ int main (){
 
     char linha [10] = {'A','B','C','D','E','F','G','H','I','J'};
     //inicia o tabuleiro {10x10}
-    int tabuleiro[10][10] = {
-        {0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0}
-    };
+    int tabuleiro[10][10] = {0};  // inicializa tudo com 0
 
-    //declara navios
-    int navio1[3] = {3,3,3};
-    int navio2[3] = {3,3,3};
-    int linhanavio1 = 3;
-    int colnavio2 = 5;
+    // Inicialização de navios {area},colIni,linIni
+    struct navio navio1 = { {3, 3, 3}, 3, 2 };//horizontal
+    struct navio navio2 = { {3, 3, 3}, 3, 4 };//vertical
+    struct navio navio3 = { {3, 3, 3}, 6, 0 };//diagonal
+    struct navio navio4 = { {3, 3, 3}, 5, 7 };//diagonal
+
+
     //posiciona os navios
     //navio 1
     for ( i = 0; i < 3; i++)
     {
-        int pos = linhanavio1+i;
-        if (pos >= 0 && pos < 10 && tabuleiro[linhanavio1][pos] == 0){
-            tabuleiro[linhanavio1][pos] = navio1[i];
+        int pos = navio1.colIni+i;
+        if (pos >= 0 && pos < 10 && tabuleiro[navio1.linIni][pos] == 0){
+            tabuleiro[navio1.linIni][pos] = navio1.area[i];
         } else {
-            printf("Falha posição navio 1 (i: %d,pos: %d, tabuleiro: %d)",i,pos,tabuleiro[linhanavio1][pos]);
+            printf("Falha posição navio 1 (i: %d,pos: %d, tabuleiro: %d)",i,pos,tabuleiro[navio1.linIni][pos]);
             return -1;
         }
-
     }
+
     //navio 2
     for ( i = 0; i < 3; i++)
     {
-        int pos = colnavio2+i;
-        if (pos >= 0 && pos < 10 && tabuleiro[pos][colnavio2] == 0){
-            tabuleiro[pos][colnavio2] = navio2[i];
+        int pos = navio2.linIni+i;
+        if (pos >= 0 && pos < 10 && tabuleiro[pos][navio2.colIni] == 0){
+            tabuleiro[pos][navio2.colIni] = navio2.area[i];
         } else {
-            printf("Falha posição navio 2 (i: %d,pos: %d, tabuleiro: %d)",i,pos,tabuleiro[pos][colnavio2]);
+            printf("Falha posição navio 2 (i: %d,pos: %d, tabuleiro: %d)",i,pos,tabuleiro[pos][navio2.colIni]);
             return -1;
         }
         
     }
+
+    //navio 3
+    for ( i = 0; i < 3; i++)
+    {
+        int coluna = navio3.colIni+i;
+        int linha = navio3.linIni+i;
+        if (coluna >= 0 && coluna < 10 && linha >= 0 && linha < 10 && tabuleiro[linha][coluna] == 0){
+            tabuleiro[linha][coluna] = navio3.area[i];
+        } else {
+            printf("Falha posição navio 3 (i: %d,coluna: %d, linha: %d, tabuleiro: %d)",i,coluna,linha,tabuleiro[linha][coluna]);
+            return -1;
+        }
+    }
+
+    //navio 4
+    for ( i = 0; i < 3; i++)
+    {
+        int coluna = navio4.colIni+i;
+        int linha = navio4.linIni+i;
+        if (coluna >= 0 && coluna < 10 && linha >= 0 && linha < 10 && tabuleiro[linha][coluna] == 0){
+            tabuleiro[linha][coluna] = navio4.area[i];
+        } else {
+            printf("Falha posição navio 4 (i: %d,coluna: %d, linha: %d, tabuleiro: %d)",i,coluna,linha,tabuleiro[linha][coluna]);
+            return -1;
+        }
+    }
+    
 
     //exibe o tabuleiro
     printf("Tabuleiro da Batalha Naval \n    ");
@@ -97,7 +88,7 @@ int main (){
     printf("\n     _ _ _ _ _ _ _ _ _ _");
 
     
-    for ( i = 0; i < 10; i++)
+    for ( i = 0; i < 10; i++) //for para exibir o tabuleiro
     {
         i < 9 ? printf("\n  %d|",i + 1):printf("\n %d|",i + 1); //caso i < 9 imprimir um espasso a mais na frente
 
